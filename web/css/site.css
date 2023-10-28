@@ -1,0 +1,15 @@
+.error-summary {
+    color: #a94442;
+    background: #fdf7f7;
+    border-left: 3px solid #eed3d7;
+    padding: 10px 20px;
+    margin: 0 0 15px 0;
+}
+
+main{
+    min-height: calc(100vh - 100px);
+}
+
+body{
+    background: #e3e3e3;
+}
