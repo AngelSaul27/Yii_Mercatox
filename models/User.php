@@ -6,15 +6,21 @@ use yii\db\ActiveRecord;
 
 class User extends ActiveRecord implements \yii\web\IdentityInterface
 {
+    /**
+     * @var mixed|null
+     */
     public $id;
-    public $name;
+    public $username;
+    public $email;
     public $password;
     public $authKey;
+    public $status;
+    public $superadmin;
     public $accessToken;
 
-    public static function tableName()
+    public static function tableName(): string
     {
-        return '{{usuario}}';
+        return '{{user}}';
     }
 
     /**
@@ -31,7 +37,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
 
     public static function findByEmail($email): ?User
     {
-        return static::findOne(['correo' => $email]);
+        return static::findOne(['email' => $email]);
     }
 
     /**
@@ -40,7 +46,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
      * @param string $password password to validate
      * @return bool if password provided is valid for current user
      */
-    public function validatePassword($password): bool
+    public function validatePassword(string $password): bool
     {
         return $this->password === $password;
     }

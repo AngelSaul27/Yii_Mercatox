@@ -2,6 +2,7 @@
     use app\assets\AppAsset;
     use app\widgets\Alert;
     use yii\bootstrap5\Html;
+    use webvimark\modules\UserManagement\UserManagementModule;
 
     AppAsset::register($this);
     $this->registerCsrfMetaTags();
@@ -10,6 +11,8 @@
     $this->registerMetaTag(['name' => 'description', 'content' => $this->params['meta_description'] ?? '']);
     $this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_keywords'] ?? '']);
     $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii::getAlias('@web/favicon.ico')]);
+    $this->registerJsFile(Yii::getAlias('@web/assets/style_tail.js'), ['position' => \yii\web\View::POS_HEAD]);
+    $this->registerCssFile('https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.css');
 ?>
 
 <?php $this->beginPage() ?>
@@ -17,14 +20,13 @@
     <html lang="es-es">
     <head>
         <title><?= Html::encode($this->title) ?></title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.css" rel="stylesheet" />
         <?php $this->head() ?>
     </head>
     <body>
         <?php $this->beginBody() ?>
 
         <header id="header" class="text-white bg-[#fff159] px-[80px] py-2">
+
             <div class="flex gap-5 justify-content-start align-items-bottom py-1">
                 <!--Logotipo-->
                 <a href="<?= Yii::getAlias('@web/')?>" class="ml-1">
@@ -42,6 +44,7 @@
                     </button>
                 </form>
             </div>
+
             <div class="flex justify-content-between align-items-end">
                 <!-- Enviar -->
                 <a href="<?= Yii::getAlias('@web/login')?>" class="flex gap-2 min-w-[185px]">
@@ -58,6 +61,7 @@
                         <span class="text-neutral-900 text-xs">Codigo postal</span>
                     </div>
                 </a>
+
                 <!-- Vinculos -->
                 <ul class="flex gap-3 text-sm w-full">
                     <li class="text-gray-600 hover:text-neutral-900">
@@ -73,14 +77,70 @@
                         <a href="">Tecnologia</a>
                     </li>
                 </ul>
+
                 <!--User, Carrito-->
                 <ul class="flex align-items-center gap-3 text-sm min-w-max">
+                    <?php if(Yii::$app->user->isGuest): ?>
                     <li class="text-gray-600 hover:text-neutral-900">
                         <a href="<?= Yii::getAlias('@web/register')?>">Crea tu cuenta</a>
                     </li>
                     <li class="text-gray-600 hover:text-neutral-900">
                         <a href="<?= Yii::getAlias('@web/login')?>">Ingresa</a>
                     </li>
+                    <?php else :?>
+                        <li class="text-gray-600 hover:text-neutral-900 cursor-pointer" data-dropdown-toggle="user_dropdown" type="button">
+                            <?php if(Yii::$app->user->identity->fotografia == null) : ?>
+                                <div class="flex items-center gap-1">
+                                    <img class="h-6 rounded-full" src="<?= Yii::getAlias('@web/storage/profile/default.avif') ?>" alt="avatar_<?= Yii::$app->user->identity->username?>" >
+                                    <span class=""><?= Yii::$app->user->identity->username ?></span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="w-4 h-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                    </svg>
+                                </div>
+                            <?php else: ?>
+                                <div>
+                                    <img src="<?= Yii::$app->user->identity->fotografia ?>" alt="avatar_<?= Yii::$app->user->identity->username?>" >
+                                </div>
+                            <?php endif; ?>
+
+                            <div id="user_dropdown" class="z-[100] hidden bg-white rounded-md w-max shadow overflow-hidden divide-y divide-gray-100">
+                                <ul class="py-2 text-sm text-gray-700">
+                                    <?php if(Yii::$app->user->identity->superadmin) : ?>
+                                        <?php
+                                            foreach((UserManagementModule::menuItems())as $items){
+                                                echo '<li>
+                                                        <a class="block px-4 py-2 hover:bg-gray-100" href="'.($items['url'][0]) .'">'
+                                                            .($items['label']).
+                                                        '</a>
+                                                      </li>';
+                                            }
+                                        ?>
+                                    <?php else : ?>
+                                        <li>
+                                            <a href="#" class="block px-4 py-2 hover:bg-gray-100">Mi Perfil</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="block px-4 py-2 hover:bg-gray-100">Mis Compras</a>
+                                        </li>
+                                    <?php endif; ?>
+                                </ul>
+                                <form class="block w-full text-start" method="post" action="<?= Yii::getAlias('@web/logout')?>" href="<?= Yii::getAlias('@web/logout')?>">
+                                    <?= Html::input('hidden',Yii::$app->request->csrfParam,Yii::$app->request->csrfToken)?>
+                                    <button type="submit" class="text-sm block px-4 py-2 hover:bg-gray-100">
+                                        Cerrar sesion
+                                    </button>
+                                </form>
+                            </div>
+                        </li>
+                        <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                            <ul class="py-2 text-sm text-gray-700">
+                                <li>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
+                                </li>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+
                     <li class="text-gray-600 hover:text-neutral-900">
                         <a href="<?= Yii::getAlias('web/compras')?>">Mis compras</a>
                     </li>
@@ -131,7 +191,7 @@
         </footer>
 
         <?php $this->endBody() ?>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.js"></script>
+        <?php $this->registerJsFile(Yii::getAlias('https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.js'), ['position' => \yii\web\View::POS_END]);?>
     </body>
 </html>
 <?php $this->endPage() ?>

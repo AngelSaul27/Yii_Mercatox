@@ -17,21 +17,22 @@
         </svg>
     </a>
 
+    <?php $form = ActiveForm::begin() ?>
     <div class="rounded-md bg-white shadow px-4 w-[400px] px-3 py-3">
         <h1 class="font-bold text-2xl"><?= Html::encode($this->title) ?></h1>
         <p class="font-light text-sm mt-1 mb-2">Completa todos los campos por favor.</p>
 
         <div class="space-y-2">
             <label class="text-gray-500">Correo</label>
-            <input name="email" type="email" placeholder="Correo electronico" class="outline-none rounded-md border-gray-300 p-2 w-full shadow-sm">
-            <label class="text-gray-500">Contraseña</label>
-            <input name="password" type="password" placeholder="Contraseña" class="outline-none rounded-md border-gray-300 p-2 w-full shadow-sm">
+            <?= $form->field($model, 'email')->input('email', ['class' => 'outline-none rounded-md border-gray-300 p-2 w-full shadow-sm', 'placeholder' => 'Correo electronico'])->label(false) ?>
+            <label class="text-gray-500 -mt-10 block">Contraseña</label>
+            <?= $form->field($model, 'password')->input('password', ['class' => 'outline-none rounded-md border-gray-300 p-2 w-full shadow-sm', 'placeholder' => 'Contraseña'])->label(false) ?>
         </div>
 
         <button class="w-full rounded-md px-3 py-2 text-xl font-light bg-blue-700 text-white mt-3 mb-2">
             Iniciar sesión
         </button>
-
     </div>
+    <?php ActiveForm::end() ?>
 
 </div>

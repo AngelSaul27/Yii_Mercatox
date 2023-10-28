@@ -18,6 +18,9 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'bootstrap' => [
+            'class' => 'yii\bootstrap5\BootstrapAsset',
+        ],
 
         /** ====================
             replace for user-management
