@@ -9,10 +9,7 @@ $this->title = 'My Yii Application';
 
     <!--CAROUSEL-->
     <?= app\widgets\CarouselWidget::widget([
-        'items' => [
-            ['image' => Yii::getAlias('@web/img/pruebas_carousel_2.png'), 'caption' => 'Imagen 1'],
-            ['image' => Yii::getAlias('@web/img/pruebas_carousel_1.png'), 'caption' => 'Imagen 2'],
-        ]
+        'items' => $ads
     ]) ?>
 
     <div class="px-[80px] py-3">
@@ -22,21 +19,24 @@ $this->title = 'My Yii Application';
 
         <!--PRODUCTOS-->
         <div class="grid grid-cols-4 gap-4">
-            <?php for($i = 0; $i < 4; $i++) : ?> <? //ITERACIÓN PARA LA IMPRESIÓN DE PRODUCTOS ?>
-            <div class="rounded-md overflow-hidden">
-                <!-- FOTOGRAFIA -->
-                <div class="w-full h-[220px]">
-                    <img class="object-cover h-full" src="<?= Yii::getAlias('@web/img/pruebas_carousel_2.png')?>" height="220" alt="">
-                </div>
-                <div class="flex flex-col font-light text-gray-600 bg-white p-3">
-                    <p>Nombre del producto</p>
-                    <!--PRICE-->
-                    <p class="text-neutral-800 font-semibold text-2xl mt-1">$ 2,179</p>
-                    <!--Tipo-->
-                    <p class="text-blue-600 font-semibold mt-2 text-sm">Producto nuevo</p>
-                </div>
-            </div>
-            <?php endfor;?>
+            <?php if(isset($producto)) : ?>
+                <?php foreach ($producto as $item) : ?>
+                    <? //ITERACIÓN PARA LA IMPRESIÓN DE PRODUCTOS ?>
+                    <div class="rounded-md overflow-hidden">
+                        <!-- FOTOGRAFIA -->
+                        <div class="w-full h-[220px] bg-white">
+                            <img class="object-contain h-full mx-auto" src="<?= Yii::getAlias('@web/').$item['fotografia']?>" height="220" alt="">
+                        </div>
+                        <div class="flex flex-col font-light text-gray-600 bg-white p-3">
+                            <p><?= $item['nombre']?></p>
+                            <!--PRICE-->
+                            <p class="text-neutral-800 font-semibold text-2xl mt-1">$ <?= number_format($item['precio'],'2','.',',')?></p>
+                            <!--Tipo-->
+                            <p class="text-blue-600 font-semibold mt-2 text-sm">Producto <span class="lowercase"><?= $item['estado'] ?></span></p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
 
         <!-- ANUNCIOS -->
@@ -60,21 +60,24 @@ $this->title = 'My Yii Application';
 
         <!--PRODUCTOS-->
         <div class="grid grid-cols-4 gap-4">
-            <?php for($i = 0; $i < 4; $i++) : ?> <? //ITERACIÓN PARA LA IMPRESIÓN DE PRODUCTOS ?>
-                <div class="rounded-md overflow-hidden">
-                    <!-- FOTOGRAFIA -->
-                    <div class="w-full h-[220px]">
-                        <img class="object-cover h-full" src="<?= Yii::getAlias('@web/img/pruebas_carousel_2.png')?>" height="220" alt="">
+            <?php if(isset($new_producto)) : ?>
+                <?php foreach ($new_producto as $item) : ?>
+                    <? //ITERACIÓN PARA LA IMPRESIÓN DE PRODUCTOS ?>
+                    <div class="rounded-md overflow-hidden">
+                        <!-- FOTOGRAFIA -->
+                        <div class="w-full h-[220px] bg-white">
+                            <img class="object-contain h-full mx-auto" src="<?= Yii::getAlias('@web/').$item['fotografia']?>" height="220" alt="">
+                        </div>
+                        <div class="flex flex-col font-light text-gray-600 bg-white p-3">
+                            <p><?= $item['nombre']?></p>
+                            <!--PRICE-->
+                            <p class="text-neutral-800 font-semibold text-2xl mt-1">$ <?= number_format($item['precio'],'2','.',',')?></p>
+                            <!--Tipo-->
+                            <p class="text-blue-600 font-semibold mt-2 text-sm">Producto <span class="lowercase"><?= $item['estado'] ?></span></p>
+                        </div>
                     </div>
-                    <div class="flex flex-col font-light text-gray-600 bg-white p-3">
-                        <p>Nombre del producto</p>
-                        <!--PRICE-->
-                        <p class="text-neutral-800 font-semibold text-2xl mt-1">$ 2,179</p>
-                        <!--Tipo-->
-                        <p class="text-blue-600 font-semibold mt-2 text-sm">Producto usado</p>
-                    </div>
-                </div>
-            <?php endfor;?>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </div>
 

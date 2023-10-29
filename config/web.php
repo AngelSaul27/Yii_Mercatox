@@ -64,8 +64,18 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'login' => 'site/login',
+                'logout' => 'site/logout',
                 'register' => 'site/register',
                 'register-vendedor' => 'site/register-vendedor',
+
+                'vendedor/mis-productos' => 'vendedor/productos',
+                'vendedor/mis-productos/create' => 'vendedor/producto-create',
+
+                'management/advertisements' => 'sistema/advertisement',
+                'management/advertisements/create' => 'sistema/advertisement-create',
+                'management/publications' => 'sistema/publication',
+                'management/orders' => 'sistema/order',
+                'management/products' => 'sistema/product',
             ],
         ],
     ],

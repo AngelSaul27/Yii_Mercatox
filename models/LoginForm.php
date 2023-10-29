@@ -65,7 +65,8 @@ class LoginForm extends Model
     {
         if ($this->validate()) { //$this->rememberMe ? 3600*24*30 : 0
             $user = $this->getUser();
-            if($user == null){
+
+            if($user === null){
                 Yii::$app->session->setFlash('error', 'Error no pudimos recuperar su información');
                 return false;
             }
@@ -75,7 +76,7 @@ class LoginForm extends Model
         return false;
     }
 
-    private function getUser() : UserIdentity
+    private function getUser() : ?UserIdentity
     {
         if($this->_user === false){
             $identity = new Yii::$app->user->identityClass;

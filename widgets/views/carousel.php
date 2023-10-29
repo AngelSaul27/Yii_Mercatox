@@ -1,8 +1,10 @@
 <div id="default-carousel" class="relative w-full" data-carousel="slide">
-    <div class="relative h-56 overflow-hidden md:h-96">
+    <div class="relative h-56 overflow-hidden md:h-[340px]">
         <?php foreach ($items as $index => $item): ?>
             <div class="hidden duration-100 ease-in-out" data-carousel-item>
-                <img src="<?= $item['image'] ?>" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="<?= $item['caption'] ?>">
+                <div class="absolute block w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                    <img class="object-cover w-full h-full" src="<?= $item['image'] ?>"  alt="<?= $item['caption'] ?>">
+                </div>
             </div>
         <?php endforeach; ?>
     </div>
