@@ -21,6 +21,10 @@ $config = [
         'bootstrap' => [
             'class' => 'yii\bootstrap5\BootstrapAsset',
         ],
+        'formatter' => [
+            'class' => 'yii\i18n\Formatter',
+            'timeZone' => 'America/Mexico_City'
+        ],
 
         /** ====================
             replace for user-management
@@ -68,9 +72,20 @@ $config = [
                 'register' => 'site/register',
                 'register-vendedor' => 'site/register-vendedor',
 
+                //Vendedor
                 'vendedor/mis-productos' => 'vendedor/productos',
                 'vendedor/mis-productos/create' => 'vendedor/producto-create',
 
+                //Compradores
+                'mi-carrito/' => 'carrito/view',
+                'mi-carrito/procesar/comprar' => 'carrito/procesar-carrito',
+                'mi-carrito/producto/<id:\d+>/remove' => 'carrito/remove-producto',
+                'mis-compras' => 'carrito/historial',
+
+                //Sitio
+                'producto/<id:\d+>' => 'producto/view',
+
+                //Administración
                 'management/advertisements' => 'sistema/advertisement',
                 'management/advertisements/create' => 'sistema/advertisement-create',
                 'management/publications' => 'sistema/publication',
@@ -96,12 +111,7 @@ $config = [
             //'passwordRegexp' => '^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$',
             // Here you can set your handler to change layout for any controller or action
             // Tip: you can use this event in any module
-            'on beforeAction'=>function(yii\base\ActionEvent $event) {
-                if ( $event->action->uniqueId == 'user-management/auth/login' )
-                {
-                    $event->action->controller->layout = 'loginLayout.php';
-                };
-            },
+            'on beforeAction'=>function(yii\base\ActionEvent $event) {},
         ],
     ],
     /**====================*/

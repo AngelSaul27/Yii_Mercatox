@@ -1,9 +1,10 @@
 <?php
+
     use app\assets\AppAsset;
-use app\models\RegisterForm as RegisterFormAlias;
-use app\widgets\Alert;
-use webvimark\modules\UserManagement\models\rbacDB\Role as RoleAlias;
-use yii\bootstrap5\Html;
+    use app\models\Records\Carrito;
+    use app\models\Usuario;
+    use app\widgets\Alert;
+    use yii\bootstrap5\Html;
     use webvimark\modules\UserManagement\UserManagementModule;
 
     AppAsset::register($this);
@@ -79,90 +80,145 @@ use yii\bootstrap5\Html;
                 <!--Profile-->
                 <ul class="flex align-items-center gap-3 text-sm min-w-max">
                     <?php if(Yii::$app->user->isGuest): ?>
-                    <li class="text-gray-600 hover:text-neutral-900">
-                        <a href="<?= Yii::getAlias('@web/register')?>">Crea tu cuenta</a>
-                    </li>
-                    <li class="text-gray-600 hover:text-neutral-900">
-                        <a href="<?= Yii::getAlias('@web/login')?>">Ingresa</a>
-                    </li>
+                        <li class="text-gray-600 hover:text-neutral-900">
+                            <a href="<?= Yii::getAlias('@web/register')?>">Crea tu cuenta</a>
+                        </li>
+                        <li class="text-gray-600 hover:text-neutral-900">
+                            <a href="<?= Yii::getAlias('@web/login')?>">Ingresa</a>
+                        </li>
                     <?php else :?>
-                    <li class="text-gray-600 hover:text-neutral-900 cursor-pointer" data-dropdown-toggle="user_dropdown" type="button">
-                        <div class="flex items-center gap-1">
-                            <img class="h-6 rounded-full" src="<?= Yii::getAlias('@web/').Yii::$app->user->identity->fotografia ?>" alt="avatar_<?= Yii::$app->user->identity->username?>" >
-                            <span class=""><?= Yii::$app->user->identity->username ?></span>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                            </svg>
+                        <li class="text-gray-600 hover:text-neutral-900 cursor-pointer" data-dropdown-toggle="user_dropdown" type="button">
+                            <div class="flex items-center gap-1">
+                                <img class="h-6 rounded-full" src="<?= Yii::getAlias('@web/').Yii::$app->user->identity->fotografia ?>" alt="avatar_<?= Yii::$app->user->identity->username?>" >
+                                <span class=""><?= Yii::$app->user->identity->username ?></span>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                </svg>
+                            </div>
+                        </li>
+
+                        <!-- MENU DESPLEGABLE -->
+                        <div id="user_dropdown" class="z-[100] hidden bg-white rounded-md w-max shadow divide-y divide-gray-100">
+                            <ul class="py-2 text-sm text-gray-700">
+                                <?php if(Yii::$app->user->identity->superadmin) : ?>
+                                    <li data-dropdown-toggle="user_sistema_dropdown" data-dropdown-placement="left-end" type="button">
+                                        <button class="block px-4 py-2 hover:text-neutral-900">
+                                            Aplicaciones
+                                        </button>
+                                    </li>
+                                    <?php
+                                        foreach((UserManagementModule::menuItems())as $items){
+                                            echo '<li><a class="block px-4 py-2 hover:text-neutral-900" href="'.($items['url'][0]) .'">'.($items['label']).'</a></li>';
+                                        }
+                                    ?>
+                                    <div id="user_sistema_dropdown" class="z-[100] hidden bg-white rounded-md w-max shadow divide-y divide-gray-100">
+                                        <ul class="py-2 text-sm text-gray-700">
+                                            <li>
+                                                <a href="<?= Yii::getAlias('@web/management/advertisements')?>" class="block px-4 py-2 hover:text-neutral-900">Carousels</a>
+                                            </li>
+                                            <li>
+                                                <a href="<?= Yii::getAlias('@web/management/publications')?>" class="block px-4 py-2 hover:text-neutral-900 hidden">Publicaciones</a>
+                                            </li>
+                                            <li>
+                                                <a href="<?= Yii::getAlias('@web/management/orders')?>" class="block px-4 py-2 hover:text-neutral-900 hidden">Ordenes</a>
+                                            </li>
+                                            <li>
+                                                <a href="<?= Yii::getAlias('@web/management/products')?>" class="block px-4 py-2 hover:text-neutral-900 hidden">Productos</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if(Usuario::getRoleName() === Usuario::ROLE_VENDEDOR) : ?>
+                                    <li>
+                                        <a href="#" class="block px-4 py-2 hover:text-neutral-900">Mi Perfil</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block px-4 py-2 hover:text-neutral-900">Pedidos</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block px-4 py-2 hover:text-neutral-900">Mis Ventas</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= Yii::getAlias('@web/vendedor/mis-productos')?>" class="block px-4 py-2 hover:text-neutral-900">Mis Productos</a>
+                                    </li>
+                                <?php endif; ?>
+
+                                <?php if(Usuario::getRoleName() == Usuario::ROLE_COMPRADOR) : ?>
+                                    <li>
+                                        <a href="#" class="block px-4 py-2 hover:text-neutral-900">Mi Perfil</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= Yii::getAlias('@web/mis-compras')?>" class="block px-4 py-2 hover:text-neutral-900">Mis Compras</a>
+                                    </li>
+                                <?php endif; ?>
+                            </ul>
+                            <form class="block w-full text-gray-700" method="post" action="<?= Yii::getAlias('@web/logout')?>" href="<?= Yii::getAlias('@web/logout')?>">
+                                <?= Html::input('hidden',Yii::$app->request->csrfParam,Yii::$app->request->csrfToken)?>
+                                <button type="submit" class="text-sm block px-4 py-2 hover:text-neutral-900 w-full text-start">
+                                    Cerrar sesion
+                                </button>
+                            </form>
                         </div>
-                    </li>
-                    <div id="user_dropdown" class="z-[100] hidden bg-white rounded-md w-max shadow divide-y divide-gray-100">
-                        <ul class="py-2 text-sm text-gray-700">
-                            <?php if(Yii::$app->user->identity->superadmin) : ?>
-                                <li data-dropdown-toggle="user_sistema_dropdown" data-dropdown-placement="left-end" type="button">
-                                    <button class="block px-4 py-2 hover:text-neutral-900">
-                                        System
-                                    </button>
-                                </li>
-                                <?php
-                                    foreach((UserManagementModule::menuItems())as $items){
-                                        echo '<li><a class="block px-4 py-2 hover:text-neutral-900" href="'.($items['url'][0]) .'">'.($items['label']).'</a></li>';
-                                    }
-                                ?>
-                                <div id="user_sistema_dropdown" class="z-[100] hidden bg-white rounded-md w-max shadow divide-y divide-gray-100">
-                                    <ul class="py-2 text-sm text-gray-700">
-                                        <li>
-                                            <a href="<?= Yii::getAlias('@web/management/advertisements')?>" class="block px-4 py-2 hover:text-neutral-900">Advertisement</a>
-                                        </li>
-                                        <li>
-                                            <a href="<?= Yii::getAlias('@web/management/publications')?>" class="block px-4 py-2 hover:text-neutral-900">Publications</a>
-                                        </li>
-                                        <li>
-                                            <a href="<?= Yii::getAlias('@web/management/orders')?>" class="block px-4 py-2 hover:text-neutral-900">Orders</a>
-                                        </li>
-                                        <li>
-                                            <a href="<?= Yii::getAlias('@web/management/products')?>" class="block px-4 py-2 hover:text-neutral-900">Products</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            <?php elseif(key(RoleAlias::getUserRoles(Yii::$app->user->id)) === RegisterFormAlias::ROLE_VENDEDOR) : ?>
-                                <li>
-                                    <a href="#" class="block px-4 py-2 hover:text-neutral-900">Mi Perfil</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="block px-4 py-2 hover:text-neutral-900">Pedidos</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="block px-4 py-2 hover:text-neutral-900">Mis Ventas</a>
-                                </li>
-                                <li>
-                                    <a href="<?= Yii::getAlias('@web/vendedor/mis-productos')?>" class="block px-4 py-2 hover:text-neutral-900">Mis Productos</a>
-                                </li>
-                            <?php else : ?>
-                                <li>
-                                    <a href="#" class="block px-4 py-2 hover:text-neutral-900">Mi Perfil</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="block px-4 py-2 hover:text-neutral-900">Mis Compras</a>
-                                </li>
-                            <?php endif; ?>
-                        </ul>
-                        <form class="block w-full text-gray-700" method="post" action="<?= Yii::getAlias('@web/logout')?>" href="<?= Yii::getAlias('@web/logout')?>">
-                            <?= Html::input('hidden',Yii::$app->request->csrfParam,Yii::$app->request->csrfToken)?>
-                            <button type="submit" class="text-sm block px-4 py-2 hover:text-neutral-900 w-full text-start">
-                                Cerrar sesion
-                            </button>
-                        </form>
-                    </div>
                     <?php endif; ?>
 
+                    <!-- -->
+
                     <li class="text-gray-600 hover:text-neutral-900">
-                        <a href="<?= Yii::getAlias('web/compras')?>">Mis compras</a>
+                        <a href="<?= Yii::getAlias('@web/mis-compras')?>">Mis compras</a>
                     </li>
+
                     <!--Cariito-->
-                    <li class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="w-6 h-6 text-neutral-700">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-                        </svg>
+                    <li >
+                        <button class="relative select-none" data-dropdown-toggle="cart_dropdown" type="button" data-dropdown-placement="left-end">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="w-6 h-6 text-neutral-700">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                            </svg>
+
+                             <?php if (!Yii::$app->user->isGuest && (Carrito::getCarrito() )!== null) : ?>
+                                <div class="absolute -top-[3px] -right-1">
+                                    <span class="rounded-full bg-red-600 shadow-sm h-[8px] w-[8px] block"></span>
+                                </div>
+                            <?php endif; ?>
+                        </button>
+
+                        <div id="cart_dropdown" class="z-[100] hidden bg-white rounded-md w-max shadow divide-y divide-gray-100">
+                            <ul class="py-2 text-sm text-gray-700">
+                                <?php if ((Carrito::getCarrito() )!== null) : ?>
+                                    <?php
+                                        $productosAndCarrito = Carrito::getProductoCarrito();
+                                        if($productosAndCarrito !== null){
+                                            foreach ($productosAndCarrito['productos'] as $items){
+                                                echo '<li>
+                                                    <div class="flex items-center justify-content-between gap-x-3 px-2 py-2 hover:bg-gray-200 select-none cursor-pointer">
+                                                        <div class="w-[50px] h-[40px]">
+                                                            <img src="'.Yii::getAlias('@web/').$items['producto_fotografia'].'" class="object-fit w-full h-full rounded-md ">
+                                                        </div>
+                                                        <div class="flex flex-col w-[90px]">
+                                                            <h1 class="text-sm text-blue-900">'.(strlen($items['producto_nombre']) > 12 ? (substr($items['producto_nombre'],0,10)."..") : $items['producto_nombre']).'</h1>
+                                                            <span class="text-xs text-gray-500">Cantidad: '.$items['cantidad'].'</span>
+                                                        </div>
+                                                        <div class="min-w-[70px] text-end text-sm text-neutral-600">
+                                                             <span>$ '.number_format($items['precio_cantidad'], 2, '.',',').'</span>    
+                                                        </div>
+                                                    </div>
+                                                </li>';
+                                            }
+                                        }
+                                    ?>
+                                <?php else : ?>
+                                    <li class="w-full">
+                                        <div class="w-full px-3 py-2">
+                                            <span class="block text-xl font-bold text-gray-900 text-center">Carrito vacio</span>
+                                            <span class="block font-light text-sm text-gray-500 w-[180px] text-center">Aun no has agregado ningun producto a tu carrito</span>
+                                        </div>
+                                    </li>
+                                <?php endif; ?>
+                            </ul>
+                            <div class="w-full text-blue-600">
+                                <a href="<?= Yii::getAlias(Yii::$app->user->isGuest ? '/login' : '@web/mi-carrito')?>" class="w-full py-2 text-center block" ><span class="mx-auto">Ver carrito</span></a>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </div>

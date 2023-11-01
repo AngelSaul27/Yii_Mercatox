@@ -108,8 +108,8 @@ class SiteController extends Controller
 
         foreach ($advertisements as $advertisement) {
             $carouselData[] = [
-                'image' => $advertisement->imagen,
-                'caption' => Yii::getAlias('@web/').$advertisement->nombre,
+                'image' => Yii::getAlias('@web/').$advertisement->imagen,
+                'caption' => $advertisement->nombre,
             ];
         }
 

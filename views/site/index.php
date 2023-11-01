@@ -2,7 +2,7 @@
 
 /** @var yii\web\View $this */
 
-$this->title = 'My Yii Application';
+$this->title = 'Mercatox';
 
 ?>
 <div class="index_app mb-16">
@@ -22,7 +22,7 @@ $this->title = 'My Yii Application';
             <?php if(isset($producto)) : ?>
                 <?php foreach ($producto as $item) : ?>
                     <? //ITERACIÓN PARA LA IMPRESIÓN DE PRODUCTOS ?>
-                    <div class="rounded-md overflow-hidden">
+                    <a href="<?= Yii::getAlias('@web/producto/'.$item['id'])?>" class="rounded-md overflow-hidden">
                         <!-- FOTOGRAFIA -->
                         <div class="w-full h-[220px] bg-white">
                             <img class="object-contain h-full mx-auto" src="<?= Yii::getAlias('@web/').$item['fotografia']?>" height="220" alt="">
@@ -34,7 +34,7 @@ $this->title = 'My Yii Application';
                             <!--Tipo-->
                             <p class="text-blue-600 font-semibold mt-2 text-sm">Producto <span class="lowercase"><?= $item['estado'] ?></span></p>
                         </div>
-                    </div>
+                    </a>
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
@@ -63,7 +63,7 @@ $this->title = 'My Yii Application';
             <?php if(isset($new_producto)) : ?>
                 <?php foreach ($new_producto as $item) : ?>
                     <? //ITERACIÓN PARA LA IMPRESIÓN DE PRODUCTOS ?>
-                    <div class="rounded-md overflow-hidden">
+                    <a href="<?= Yii::getAlias('@web/producto/'.$item['id'])?>" class="rounded-md overflow-hidden">
                         <!-- FOTOGRAFIA -->
                         <div class="w-full h-[220px] bg-white">
                             <img class="object-contain h-full mx-auto" src="<?= Yii::getAlias('@web/').$item['fotografia']?>" height="220" alt="">
@@ -75,7 +75,7 @@ $this->title = 'My Yii Application';
                             <!--Tipo-->
                             <p class="text-blue-600 font-semibold mt-2 text-sm">Producto <span class="lowercase"><?= $item['estado'] ?></span></p>
                         </div>
-                    </div>
+                    </a>
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>

@@ -35,8 +35,8 @@ class RegisterForm extends Model
     public $correo_negocio;
     public $servicio_id;
 
-    public const ROLE_COMPRADOR = 'Comprador';
-    public const ROLE_VENDEDOR = 'Vendedor';
+    public const ROLE_COMPRADOR = Usuario::ROLE_COMPRADOR;
+    public const ROLE_VENDEDOR = Usuario::ROLE_VENDEDOR;
 
     public function rules(): array
     {
