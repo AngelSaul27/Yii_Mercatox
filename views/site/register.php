@@ -76,11 +76,11 @@ $this->title = 'Registro';
                 ->label(false) ?>
             <label class="text-gray-500 mb-1">RFC</label>
             <?= $form->field($model, 'rfc')
-                ->textInput(['id'=> 'rfc','class' => 'outline-none rounded-md border-gray-300 p-2 w-full shadow-sm -mb-1', 'placeholder' => 'No obligatorio'])
+                ->textInput(['id'=> 'rfc','class' => 'outline-none rounded-md border-gray-300 p-2 w-full shadow-sm -mb-1', 'placeholder' => 'RFC'])
                 ->label(false) ?>
             <label class="text-gray-500 mb-1">CURP</label>
             <?= $form->field($model, 'curp')
-                ->textInput(['id'=> 'curp','class' => 'outline-none rounded-md border-gray-300 p-2 w-full shadow-sm -mb-1', 'placeholder' => 'No obligatorio'])
+                ->textInput(['id'=> 'curp','class' => 'outline-none rounded-md border-gray-300 p-2 w-full shadow-sm -mb-1', 'placeholder' => 'CURP'])
                 ->label(false) ?>
         </div>
 

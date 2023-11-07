@@ -4,7 +4,7 @@ $this->title = 'Mi carrito'; ?>
 
 <div class="px-[80px] py-4">
     <div class="grid grid-cols-12 gap-[35px]">
-        <div class="col-span-8 bg-white rounded-md shadow-sm">
+        <div class="col-span-8 bg-white rounded-md shadow-sm h-max">
             <div class="px-4 py-2">
                 <h1 class="font-semibold text-xl">Productos</h1>
             </div>
@@ -23,7 +23,7 @@ $this->title = 'Mi carrito'; ?>
                                         <button type="submit" class="text-blue-700">Eliminar</button>
                                     <?php ActiveForm::end(); ?>
                                     <span class="text-blue-700">Guardar</span>
-                                    <a href="<?= Yii::getAlias('@web/producto/'.$producto['id'])?>" class="text-blue-700">Ver producto</a>
+                                    <a href="<?= Yii::getAlias('@web/producto/'.$producto['producto_id'])?>" class="text-blue-700">Ver producto</a>
                                 </div>
                             </div>
                             <div class="flex flex-col w-[200px] text-end">

@@ -29,7 +29,7 @@
                         ->label(false) ?>
                 </div>
                 <div>
-                    <label class="text-gray-500 mb-1">Stock del producto</label>
+                    <label class="text-gray-500 mb-1">Cantidad de producto disponible</label>
                     <?= $form->field($model, 'stock')
                         ->input('number',['class' => 'outline-none rounded-md border-gray-300 p-2 w-full shadow-sm -mb-1', 'placeholder' => '1 - 20'])
                         ->label(false) ?>
@@ -44,7 +44,7 @@
                     <label class="text-gray-500 mb-1">Categoria del producto</label>
                     <?= $form->field($model, 'categoria_id')
                         ->dropDownList(
-                            ArrayHelper::map(ProductoCategoria::find()->all(), 'id', 'categoria'),
+                            ArrayHelper::map($categoria ?? [], 'id', 'categoria'),
                             ['class' => 'outline-none rounded-md border-gray-300 p-2 w-full shadow-sm -mb-1', 'placeholder' => 'Nombre'])
                         ->label(false) ?>
                     <label class="text-gray-500 mb-1">Fotografia</label>

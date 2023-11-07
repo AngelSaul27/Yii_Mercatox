@@ -65,7 +65,25 @@
                 <!-- Vinculos -->
                 <ul class="flex gap-3 text-sm w-full">
                     <li class="text-gray-600 hover:text-neutral-900">
-                        <a href="">Categorias</a>
+                        <buttton data-dropdown-toggle="catergoria_dropdown" data-dropdown-placement="right-end" type="button">
+                            Categorias
+                        </buttton>
+                        <div id="catergoria_dropdown" class="z-[100] hidden bg-white rounded-md w-max shadow divide-y divide-gray-100 scrollable-div">
+                            <ul class="py-2 text-sm text-gray-700 max-h-72 scrollable-content">
+                                <?php
+                                $categorias = \app\models\Records\ProductoCategoria::find()->all();
+                                if($categorias !== null){
+                                    foreach ($categorias as $categoria){
+                                        echo '<li> 
+                                                    <a href="'.Yii::$app->urlManager->createAbsoluteUrl(['/producto/categoria', 'categoria' => $categoria->categoria]).'" class="px-3 py-2 hover:bg-gray-300 block">
+                                                     '.$categoria->categoria .' 
+                                                     </a>
+                                              </li>';
+                                    }
+                                }
+                                ?>
+                            </ul>
+                        </div>
                     </li>
                     <li class="text-gray-600 hover:text-neutral-900">
                         <a href="">Ofertas</a>

@@ -54,7 +54,7 @@ class ProductoForm extends Model
             $producto->fecha_publicacion = $this->fecha_publicacion;
 
             if(strtotime($this->fecha_publicacion) >= strtotime(date('Y-m-d'))){
-                $producto->status = self::STATUS_ACTIVE;
+                $producto->estatus = self::STATUS_ACTIVE;
             }else{
                 $producto->estatus = self::STATUS_PAUSE;
             }

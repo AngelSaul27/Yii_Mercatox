@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\ProductoForm;
 use app\models\Records\Producto;
+use app\models\Records\ProductoCategoria;
 use app\models\Records\Vendedor;
 use Yii;
 use yii\web\Controller;
@@ -33,6 +34,7 @@ class VendedorController extends Controller
 
     public function actionProductoCreate(){
         $model = new ProductoForm();
+        $categoria = ProductoCategoria::find()->all();
 
         if($model->load(Yii::$app->request->post())){
             $model->fotografia = UploadedFile::getInstance($model, 'fotografia');
@@ -48,6 +50,6 @@ class VendedorController extends Controller
             }
         }
 
-        return $this->render(self::URL.'_form_producto', ['model' => $model]);
+        return $this->render(self::URL.'_form_producto', ['model' => $model, 'categoria' => $categoria]);
     }
 }

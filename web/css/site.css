@@ -17,3 +17,27 @@ body{
 .invalid-feedback{
     margin-bottom: -5px !important;
 }
+
+.scrollable-div {
+    width: 300px; /* Ajusta el ancho según tus necesidades */
+    height: 300px; /* Ajusta la altura según tus necesidades */
+    overflow: hidden; /* Oculta la barra de desplazamiento */
+    position: relative; /* Establece una posición relativa para el contenido interno */
+}
+
+.scrollable-content {
+    width: 100%; /* Ajusta el ancho al 100% para permitir el desplazamiento horizontal */
+    height: auto; /* Permite el ajuste de altura automático según el contenido */
+    padding-right: 15px; /* Agrega un espacio para compensar el ancho de la barra de desplazamiento vertical */
+    margin-right: -15px; /* Elimina el espacio adicional generado por el padding */
+    overflow-y: scroll; /* Agrega una barra de desplazamiento vertical solo cuando sea necesario */
+}
+
+/* Estilo personalizado para la barra de desplazamiento (opcional) */
+.scrollable-content::-webkit-scrollbar {
+    width: 12px; /* Ajusta el ancho según tus preferencias */
+}
+
+.scrollable-content::-webkit-scrollbar-thumb {
+    background-color: #888; /* Color de la barra de desplazamiento */
+}

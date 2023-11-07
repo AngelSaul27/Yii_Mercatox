@@ -13,9 +13,8 @@
 
         <!--PRODUCTOS-->
         <div class="grid grid-cols-4 gap-4">
-            <?php if(isset($producto)) : ?>
+            <?php if(isset($producto) && count($producto) > 0) : ?>
                 <?php foreach ($producto as $item) : ?>
-                    <? //ITERACIÓN PARA LA IMPRESIÓN DE PRODUCTOS ?>
                     <a href="<?= Yii::getAlias('@web/producto/'.$item['id'])?>" class="rounded-md overflow-hidden">
                         <!-- FOTOGRAFIA -->
                         <div class="w-full h-[220px] bg-white">
@@ -30,6 +29,13 @@
                         </div>
                     </a>
                 <?php endforeach; ?>
+            <?php else :?>
+
+                <div class="text-center col-span-4 my-5">
+                    <h1 class="text-3xl font-semibold">Sin resultado</h1>
+                    <p class="text-xl font-light">No encontramos ningun articulo con la categoria que buscas</p>
+                </div>
+
             <?php endif; ?>
         </div>
     </div>
