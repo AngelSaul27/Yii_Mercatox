@@ -6,6 +6,7 @@ use app\models\Records\Producto;
 use app\models\Records\Vendedor;
 use Yii;
 use yii\base\Model;
+use yii\validators\FileValidator;
 
 class ProductoForm extends Model
 {
@@ -25,13 +26,19 @@ class ProductoForm extends Model
     public function rules(): array
     {
         return [
-          [
+            [
               ['nombre', 'descripcion', 'precio', 'stock', 'estado', 'categoria_id', 'fotografia', 'fecha_publicacion'],
-              'required', 'message' => 'Complete este campo'
-          ],
+              'required', 'message' => 'Complete este campo', 'on' => 'create'
+            ],
+            ['fecha_publicacion', 'date', 'format' => 'php:Y-m-d', 'message' => 'Formato de fecha incorrecto','on' => 'edit'],
+            ['fecha_publicacion', 'date', 'format' => 'php:Y-m-d', 'message' => 'Formato de fecha incorrecto', 'on' => 'create'],
+            [
+                ['nombre', 'descripcion', 'precio', 'stock', 'estado', 'categoria_id', 'fecha_publicacion'],
+                'required', 'message' => 'Complete este campo', 'on' => 'edit'
+            ],
             [
                 ['fotografia'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, jpeg, webp',
-                'message' => 'Solo archivos png, jpg y jpeg'
+                'message' => 'Solo archivos png, jpg y jpeg', 'on' => 'create'
             ],
         ];
     }
@@ -41,7 +48,6 @@ class ProductoForm extends Model
         if($this->validate())
         {
             $nameFile = self::generatedNameFile();
-
             $producto = new Producto();
             $producto->nombre = $this->nombre;
             $producto->descripcion = $this->descripcion;
@@ -65,6 +71,49 @@ class ProductoForm extends Model
                 return true;
             }
         }
+        return false;
+    }
+
+    public function updated($id): bool
+    {
+        if($this->validate()){
+            $rutaAntigua = null;
+            $current = Producto::findOne(['id' => $id, 'vendedor_id' => (Vendedor::getIdVendedor())]);
+            $current->nombre = $this->nombre;
+            $current->descripcion = $this->descripcion;
+            $current->precio = $this->precio;
+            $current->stock = $this->stock;
+            $current->estado = $this->estado;
+            $current->categoria_id = $this->categoria_id;
+            $current->fecha_publicacion = $this->fecha_publicacion;
+
+            if($this->fotografia !== null){
+                $reglas = new FileValidator(
+                    ['extensions' => 'png, jpg, jpeg, webp', 'skipOnEmpty' => false]
+                );
+
+                $apply = $reglas->validate($this->fotografia, $error);
+
+                if ($apply) {
+                    if (!empty($current->fotografia)) {
+                        $rutaAntigua = Yii::getAlias('@webroot/') . $current->fotografia;
+                        if (file_exists($rutaAntigua)) {
+                            $current->fotografia = self::generatedNameFile();
+                        }
+                    }
+                }
+            }
+
+            if($current->save()){
+                if ($rutaAntigua !== null && file_exists($rutaAntigua)) {
+                    unlink($rutaAntigua);
+                    $this->fotografia->saveAs($current->fotografia);
+                }
+
+                return true;
+            }
+        }
+
         return false;
     }
 

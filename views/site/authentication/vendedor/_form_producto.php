@@ -2,10 +2,38 @@
     use app\models\Records\ProductoCategoria;
     use yii\bootstrap5\ActiveForm;
     use yii\helpers\ArrayHelper;
-    $this->title = 'Crear producto';
+use yii\jui\DatePicker;
+
+$this->title = $title;
 ?>
 
 <div class="px-10 py-5">
+    <!-- Breadcrumb -->
+    <nav class="flex py-3 text-gray-700 mb-2 w-max" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3">
+            <li class="inline-flex items-center">
+                <a href="<?= Yii::getAlias('@web/')?>" class="inline-flex items-center text-sm font-light text-gray-700 hover:text-blue-600">
+                    Volver
+                </a>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="m1 9 4-4-4-4"/>
+                    </svg>
+                    <a href="<?= Yii::getAlias('@web/vendedor/mis-productos') ?>" class="ml-1 text-sm font-light text-gray-700 hover:text-blue-600 md:ml-2">Mis productos</a>
+                </div>
+            </li>
+            <li aria-current="page">
+                <div class="flex items-center">
+                    <svg class="w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="m1 9 4-4-4-4"/>
+                    </svg>
+                    <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2"><?= $title ?></span>
+                </div>
+            </li>
+        </ol>
+    </nav>
 
     <div class="bg-white rounded-md shadow w-1/2 p-3 mx-auto">
         <span class="font-bold text-2xl text-blue-900 block text-center">Añade un producto</span>
@@ -55,10 +83,13 @@
             </div>
             <label class="text-gray-500 mb-1">Fecha de Publicación</label>
             <?= $form->field($model, 'fecha_publicacion')
-                ->input('date',['class' => 'outline-none rounded-md border-gray-300 p-2 w-full shadow-sm -mb-1', 'placeholder' => 'Nombre del producto'])
-                ->label(false) ?>
+            ->widget(DatePicker::className(), [
+                'options' => ['class' => 'outline-none rounded-md border-gray-300 p-2 w-full shadow-sm -mb-1', 'placeholder' => '##-##-####'],
+                'dateFormat' => 'yyyy-MM-dd'
+            ])->label(false) ?>
+
             <button class="w-full col-span-2 rounded-md px-3 py-2 text-xl font-light bg-blue-700 text-white text-center cursor-pointer">
-                Agregar Producto
+                <?= $title ?>
             </button>
         <?php ActiveForm::end() ?>
     </div>

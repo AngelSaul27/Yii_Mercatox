@@ -152,10 +152,10 @@
                                         <a href="#" class="block px-4 py-2 hover:text-neutral-900">Mi Perfil</a>
                                     </li>
                                     <li>
-                                        <a href="#" class="block px-4 py-2 hover:text-neutral-900">Pedidos</a>
+                                        <a href="#" class="block px-4 py-2 hover:text-neutral-900 hidden">Pedidos</a>
                                     </li>
                                     <li>
-                                        <a href="#" class="block px-4 py-2 hover:text-neutral-900">Mis Ventas</a>
+                                        <a href="#" class="block px-4 py-2 hover:text-neutral-900 hidden">Mis Ventas</a>
                                     </li>
                                     <li>
                                         <a href="<?= Yii::getAlias('@web/vendedor/mis-productos')?>" class="block px-4 py-2 hover:text-neutral-900">Mis Productos</a>

@@ -29,7 +29,12 @@ class SiteController extends Controller
 
     public function actionIndex(): string
     {
-        $ads = self::processAdvertisement(Advertisement::find()->all());
+        $ads = self::processAdvertisement(
+            Advertisement::find()
+                ->where(['<=', 'fecha_habilitacion', date('Y-m-d')])
+                ->andWhere(['>=', 'fecha_deshabilitacion', date('Y-m-d')])
+                ->all()
+        );
         $producto = Producto::find()->orderBy('RAND()')->limit(4)->all();
         $new_producto = Producto::find()->orderBy(['fecha_publicacion' => SORT_DESC])->limit(4)->all();
 
