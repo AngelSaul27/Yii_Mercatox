@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\models\Records\Carrito;
 use app\models\Records\CarritoItem;
+use app\models\Records\Producto;
+use Yii;
 use yii\db\StaleObjectException;
 use yii\web\Controller;
 
@@ -18,7 +20,8 @@ class CarritoController extends Controller
         ];
     }
 
-    public function actionView(){
+    public function actionView(): string
+    {
         $carrito = Carrito::getProductoCarrito();
 
         if($carrito === null){
@@ -52,13 +55,53 @@ class CarritoController extends Controller
         if(\Yii::$app->request->post()){
             $carrito = Carrito::getCarrito();
             if($carrito != null){
-                $carrito->estado = Carrito::CARRITO_COMPRADO;
-                $carrito->updated_at = date('Y-m-d h:m:s');
+                $transaction = Yii::$app->db->beginTransaction();
+                try {
+                    $carrito->estado = Carrito::CARRITO_COMPRADO;
+                    $carrito->updated_at = date('Y-m-d H:i:s');
+                    $carrito->save();
 
-                if($carrito->save()){
-                    \Yii::$app->session->setFlash('success', 'Producto comprado exitosamente');
-                    return $this->redirect('/mi-carrito');
-                }
+                    // Obtener un array asociativo de producto_id y cantidad
+                    $carritoItems = CarritoItem::find()
+                        ->select(['producto_id', 'cantidad'])
+                        ->where(['carrito_id' => $carrito->id])
+                        ->asArray()
+                        ->all();
+
+                    // Crear un array asociativo de producto_id y cantidad a restar
+                    $stocksToUpdate = [];
+                    foreach ($carritoItems as $item)
+                    {
+                        $productoId = $item['producto_id'];
+                        $cantidad = $item['cantidad'];
+                        // Asegurarse de que el producto_id es único en el array final
+                        if (!isset($stocksToUpdate[$productoId]))
+                        {
+                            $stocksToUpdate[$productoId] = $cantidad;
+                        } else {
+                            $stocksToUpdate[$productoId] += $cantidad;
+                        }
+                    }
+
+                    // Actualizar el stock de productos
+                    foreach ($stocksToUpdate as $productoId => $cantidad)
+                    {
+                        $result = Producto::updateAll(
+                            ['stock' => new \yii\db\Expression("stock - $cantidad")],
+                            ['id' => $productoId]
+                        );
+                    }
+
+                    if($result)
+                    {
+                        $transaction->commit();
+
+                        \Yii::$app->session->setFlash('success', 'Producto comprado exitosamente');
+                        return $this->redirect('/mi-carrito');
+                    }
+
+                    var_dump($result);
+                } catch (\Exception $e) { $transaction->rollBack();}
             }
         }
 

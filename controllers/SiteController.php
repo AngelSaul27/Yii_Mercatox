@@ -3,14 +3,13 @@
 namespace app\controllers;
 
 use app\models\LoginForm;
+use app\models\ProductoSearch;
 use app\models\Records\Advertisement;
 use app\models\Records\Producto;
 use app\models\RegisterForm;
 use Yii;
 use yii\web\Controller;
 use yii\web\Response;
-use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 
 class SiteController extends Controller
@@ -35,10 +34,36 @@ class SiteController extends Controller
                 ->andWhere(['>=', 'fecha_deshabilitacion', date('Y-m-d')])
                 ->all()
         );
-        $producto = Producto::find()->orderBy('RAND()')->limit(4)->all();
-        $new_producto = Producto::find()->orderBy(['fecha_publicacion' => SORT_DESC])->limit(4)->all();
+        $producto = Producto::find()
+            ->where(['producto_oferta' => 'SI'])
+            ->andWhere(['>','stock', 0])
+            ->orderBy('RAND()')
+            ->limit(4)
+            ->all();
+        $new_producto = Producto::find()
+            ->where(['>','stock', 0])
+            ->orderBy(['id' => SORT_DESC])
+            ->limit(4)
+            ->all();
 
-        return $this->render('index', ['ads' => $ads, 'producto' => $producto, 'new_producto' => $new_producto]);
+        return $this->render('index',
+            [
+                'ads' => $ads,
+                'producto' => $producto,
+                'new_producto' => $new_producto
+            ]
+        );
+    }
+
+    public function actionSearch(): string
+    {
+        $searchModel = new ProductoSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('search', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     public function actionLogin()

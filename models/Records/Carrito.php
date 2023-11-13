@@ -7,6 +7,12 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\db\Query;
 
+/**
+ * @property int|mixed|null $total
+ * @property mixed|string|null $estado
+ * @property mixed|null $comprador_id
+ * @property mixed|null $id
+ */
 class Carrito extends ActiveRecord
 {
     public const CARRITO_COMPRADO = 'COMPRADO';

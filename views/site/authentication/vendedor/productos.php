@@ -17,6 +17,12 @@ $this->title = 'Mis productos';
             <th scope="col">Nombre</th>
             <th scope="col">Descripcion</th>
             <th scope="col">Precio</th>
+            <th scope="col">
+                <span class="min-w-max block">Oferta %</span>
+            </th>
+            <th scope="col">
+                <span class="min-w-max block">Precio con oferta</span>
+            </th>
             <th scope="col">Stock</th>
             <th scope="col">Estado</th>
             <th scope="col">Categoria</th>
@@ -35,10 +41,18 @@ $this->title = 'Mis productos';
                         <span class="font-light"><?= $item['nombre']; ?></span>
                     </th>
                     <th>
-                        <span class="font-light"><?= $item['descripcion']; ?></span>
+                        <div class="max-h-[200px] overflow-y-auto">
+                            <span class="font-light"><?= $item['descripcion']; ?></span>
+                        </div>
                     </th>
                     <th>
-                        <span class="font-light"><?= $item['precio']; ?></span>
+                        <span class="font-light">$<?= number_format($item['precio'], 2, '.', ','); ?></span>
+                    </th>
+                    <th>
+                        <span class="font-light"><?= $item['producto_valor_oferta']; ?>%</span>
+                    </th>
+                    <th>
+                        <span class="font-light">$<?= number_format($item['precio_con_oferta'] ?? $item['precio'], 2, '.', ','); ?></span>
                     </th>
                     <th>
                         <span class="font-light"><?= $item['stock']; ?></span>
@@ -76,6 +90,11 @@ $this->title = 'Mis productos';
                                     </svg>
                                 </button>
                             <?php ActiveForm::end() ?>
+                            <a href="<?= Yii::getAlias('@web/vendedor/mi-producto/'.$item['id'].'/oferta')?>" class="hover:text-orange-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 14.25l6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185zM9.75 9h.008v.008H9.75V9zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm4.125 4.5h.008v.008h-.008V13.5zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                                </svg>
+                            </a>
                         </div>
                     </th>
                 </tr>

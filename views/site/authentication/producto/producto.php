@@ -63,8 +63,17 @@ $this->title = $producto->nombre; ?>
                     <a href="<?= Yii::getAlias('@web/')?>" class="text-sm font-light text-gray-900 no-underline hover:underline">73 reviews</a>
                 </div>
 
+                <?php if($producto->producto_oferta === 'NO') :?>
                 <span class="block font-light text-4xl">$ <?= number_format($producto->precio, '2', '.', ',')?></span>
                 <span class="block text-gray-600 text-sm font-light">IVA incluido</span>
+                <?php else : ?>
+                    <p class="text-gray-600 font-semibold text-md mt-1 line-through">$ <?= number_format($producto['precio'],'2','.',',')?></p>
+                    <div class="flex gap-2 items-end">
+                        <span class="block font-light text-4xl">$ <?= number_format($producto->precio_con_oferta, '2', '.', ',')?></span>
+                        <span class="bg-red-500 text-white rounded-md p-1 font-normal text-sm">-<?= $producto['producto_valor_oferta']?>%</span>
+                    </div>
+                    <span class="block text-gray-600 text-sm font-light">IVA incluido</span>
+                <?php endif; ?>
 
                 <h2 class="font-semibold my-3">Metodos de pago</h2>
                 <div class="flex flex-wrap gap-3 mb-4">

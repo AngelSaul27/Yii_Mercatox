@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\ProductoForm;
+use app\models\ProductoOfertaForm;
 use app\models\Records\Producto;
 use app\models\Records\ProductoCategoria;
 use app\models\Records\Vendedor;
@@ -90,6 +91,34 @@ class VendedorController extends Controller
         }
 
         return $this->render(self::URL.'_form_producto', ['model' => $model, 'categoria' => $categoria, 'title' => 'Editar Producto']);
+    }
+
+    public function actionProductoOferta($id){
+        $producto = Producto::findOne(['id' => $id, 'vendedor_id' => (Vendedor::getIdVendedor())]);
+
+        if($producto === null){
+            return $this->goBack();
+        }
+
+        $model = new ProductoOfertaForm();
+        $model->producto_valor_oferta = $producto->producto_valor_oferta;
+        $model->precio_con_oferta = $producto->precio_con_oferta;
+
+        if($model->load(Yii::$app->request->post())){
+            $result = $model->ofertar($producto);
+
+            Yii::$app->session->setFlash(
+                $result? 'success' : 'error',
+                $result? 'Oferta agregada' : 'Oferta no añadida'
+            );
+
+            if($result){
+                return $this->redirect('/vendedor/mis-productos');
+            }
+        }
+
+
+        return $this->render(self::URL.'_form_producto_oferta', ['model' => $model, 'producto' => $producto]);
     }
 
     /**

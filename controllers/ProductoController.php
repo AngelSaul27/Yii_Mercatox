@@ -29,9 +29,19 @@ class ProductoController extends Controller
             return $this->goBack();
         }
 
+        if($producto->stock === 0){
+            \Yii::$app->session->setFlash('warning', 'El producto no esta disponible ya');
+            return $this->goBack();
+        }
+
         $vendedorId = $producto->vendedor_id;
         $categoriaId = $producto->categoria_id;
-        $moreProduct = Producto::find()->where(['categoria_id' => $categoriaId])->andwhere(['not', ['id' => $id]])->limit(4)->all();
+        $moreProduct = Producto::find()
+            ->where(['categoria_id' => $categoriaId])
+            ->andwhere(['not', ['id' => $id]])
+            ->andWhere(['>','stock', 0])
+            ->limit(4)
+            ->all();
 
         $categoria = ProductoCategoria::findOne(['id' => $categoriaId]);
         $vendedor = Vendedor::findOne(['id' => $vendedorId]);
@@ -45,6 +55,9 @@ class ProductoController extends Controller
             $form->producto_id = $id;
             $form->producto_precio = $producto->precio;
             $form->producto_stock = $producto->stock;
+            $form->producto_oferta = $producto->producto_oferta;
+            $form->precio_con_oferta = $producto->precio_con_oferta;
+
             $result = $form->saveCarrito();
 
             Yii::$app->session->setFlash(
@@ -59,7 +72,8 @@ class ProductoController extends Controller
         );
     }
 
-    public function actionCategoria($categoria){
+    public function actionCategoria($categoria)
+    {
         $categoria = ProductoCategoria::findOne(['categoria' => $categoria]);
 
         if($categoria === null){

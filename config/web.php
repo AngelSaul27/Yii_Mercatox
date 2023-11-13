@@ -75,6 +75,7 @@ $config = [
                 //Vendedor
                 'vendedor/mis-productos' => 'vendedor/productos',
                 'vendedor/mis-productos/create' => 'vendedor/producto-create',
+                'vendedor/mi-producto/<id:\d+>/oferta' => 'vendedor/producto-oferta',
                 'vendedor/mi-producto/<id:\d+>/edit' => 'vendedor/producto-edit',
                 'vendedor/mi-producto/<id:\d+>/delete' => 'vendedor/producto-delete',
 
@@ -86,6 +87,7 @@ $config = [
 
                 //Sitio
                 'producto/<id:\d+>' => 'producto/view',
+                'producto/search' => 'site/search',
 
                 //Administración
                 'management/advertisements' => 'sistema/advertisement',
