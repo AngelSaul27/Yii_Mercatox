@@ -21,6 +21,13 @@ class ProductoController extends Controller
         ];
     }
 
+    public function actionAllProducto(){
+        $producto = Producto::find()->where(['>', 'stock', 0])->orderBy('RAND()')->all();
+        $ads = self::processAdvertisement(Advertisement::find()->all());
+
+        return $this->render('/site/authentication/producto/producto-categoria', ['producto' => $producto, 'ads' => $ads]);
+    }
+
     public function actionView($id){
         $producto = Producto::findOne(['id' => $id]);
 

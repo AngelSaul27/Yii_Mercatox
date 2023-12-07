@@ -1,4 +1,4 @@
-<?php $this->title = $categoria->categoria; ?>
+<?php $this->title = $categoria->categoria ?? 'Productos'; ?>
 <div class="index_app mb-16">
 
     <!--CAROUSEL-->
@@ -8,7 +8,7 @@
 
     <div class="px-[80px] py-3">
         <h1 class="text-3xl font-semibold text-neutral-800 my-4">
-            Ofertas
+            Productos
         </h1>
 
         <!--PRODUCTOS-->

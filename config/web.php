@@ -88,6 +88,7 @@ $config = [
                 //Sitio
                 'producto/<id:\d+>' => 'producto/view',
                 'producto/search' => 'site/search',
+                'producto/explorar' => 'producto/all-producto',
 
                 //Administración
                 'management/advertisements' => 'sistema/advertisement',

@@ -102,9 +102,9 @@ class CarritoForm
                 $model->carrito_id = ($cart->id);
 
                 if($this->producto_oferta === 'SI'){
-                    $cartItem->precio_cantidad = $this->precio_con_oferta;
+                    $model->precio_cantidad = $this->precio_con_oferta;
                 }else{
-                    $cartItem->precio_cantidad = $this->producto_precio;
+                    $model->precio_cantidad = $this->producto_precio;
                 }
 
                 $model->save();

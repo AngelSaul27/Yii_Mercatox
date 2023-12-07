@@ -14,7 +14,7 @@ $this->title = 'Mercatox';
 
     <div class="px-[80px] py-3">
         <h1 class="text-3xl font-semibold text-neutral-800 my-4">
-            Ofertas<a href="" class="text-blue-500 text-[18px] font-light ml-2">ver todas</a>
+            Ofertas<a href="<?= Yii::getAlias('@web/producto/explorar') ?>" class="text-blue-500 text-[18px] font-light ml-2">ver todas</a>
         </h1>
 
         <!--PRODUCTOS-->
@@ -60,7 +60,7 @@ $this->title = 'Mercatox';
         </div>
 
         <h1 class="text-3xl font-semibold text-neutral-800 my-4">
-            Ultimos productos<a href="" class="text-blue-500 text-[18px] font-light ml-2">ver todas</a>
+            Ultimos productos<a href="<?= Yii::getAlias('@web/producto/explorar') ?>" class="text-blue-500 text-[18px] font-light ml-2">ver todas</a>
         </h1>
 
         <!--PRODUCTOS-->
